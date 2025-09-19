@@ -16,7 +16,7 @@ async function listarArquivosEmDiretorio(_diretorio: string): Promise<string[]> 
 
 // Função utilitária para carregar o conteúdo JSON de um arquivo do repositório (via raw.githubusercontent.com)
 async function carregarJsonDeArquivo(path: string): Promise<any> {
-  const url = `https://raw.githubusercontent.com/qway-tech/qway-referencias/main/${path}`;
+  const url = `https://raw.githubusercontent.com/qway-tech/qway-indica-dados/main/${path}`;
   try {
     const res = await fetch(url);
     if (!res.ok) {
@@ -126,20 +126,6 @@ export default function ReferenciasPage() {
         localStorage.removeItem(`ref-pending-${idParam2}`);
       }
 
-      // Carregar comentários da referência selecionada, se for aprovada
-      if (refSelecionada && refSelecionada.status === "aprovada") {
-        try {
-          const tipo = refSelecionada.natureza === "positiva" ? "positivas" : "negativas";
-          const url = `https://raw.githubusercontent.com/qway-tech/qway-referencias/main/referencias/${tipo}/comentarios/${refSelecionada.id}.json`;
-          const res = await fetch(url);
-          if (res.ok) {
-            const json = await res.json();
-            setComentarios(Array.isArray(json) ? json : (Array.isArray(json.comentarios) ? json.comentarios : []));
-          }
-        } catch {
-          // erro silencioso
-        }
-      }
 
       // Remove do localStorage referências que já vieram do GitHub
       todasComPendentes.forEach((ref) => {
@@ -657,8 +643,32 @@ export default function ReferenciasPage() {
                           {userEmail && c.email === userEmail && (
                             <button
                               className="text-xs text-red-600 hover:underline"
-                              onClick={() => {
-                                setComentarios((prev) => prev.filter((_, idx) => idx !== i));
+                              onClick={async () => {
+                                const confirmar = window.confirm("Tem certeza que deseja remover este comentário?");
+                                if (!confirmar) return;
+
+                                const comentarioRemovido = comentarios[i];
+                                try {
+                                  const response = await fetch("http://localhost:4001/remover-comentario", {
+                                    method: "DELETE",
+                                    headers: {
+                                      "Content-Type": "application/json",
+                                    },
+                                    body: JSON.stringify({
+                                      referenciaId: selected?.id,
+                                      natureza: selected?.natureza,
+                                      comentarioIndex: i,
+                                      email: userEmail,
+                                    }),
+                                  });
+
+                                  if (!response.ok) throw new Error("Erro ao remover comentário");
+
+                                  setComentarios((prev) => prev.filter((_, idx) => idx !== i));
+                                  alert("Comentário removido com sucesso.");
+                                } catch (err) {
+                                  alert("Erro ao remover o comentário. Tente novamente.");
+                                }
                               }}
                             >
                               Remover
@@ -803,8 +813,21 @@ export default function ReferenciasPage() {
                   <div className="mt-6 flex justify-between items-center gap-4">
                     {(contadores[selected.id]?.comentarios ?? 0) > 0 ? (
                       <button
-                        onClick={() => {
+                        onClick={async () => {
                           setShowComentarios(true);
+                          try {
+                            const tipo = selected.natureza === "positiva" ? "positivas" : "negativas";
+                            const url = `https://raw.githubusercontent.com/qway-tech/qway-indica-dados/main/referencias/${tipo}/comentarios/${selected.id.toLowerCase()}.json`;
+                            const res = await fetch(url);
+                            if (res.ok) {
+                              const json = await res.json();
+                              setComentarios(Array.isArray(json) ? json : (Array.isArray(json.comentarios) ? json.comentarios : []));
+                            } else {
+                              setComentarios([]);
+                            }
+                          } catch {
+                            setComentarios([]);
+                          }
                         }}
                         className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-sm rounded font-medium"
                       >
@@ -815,7 +838,22 @@ export default function ReferenciasPage() {
                       </button>
                     ) : (
                       <button
-                        onClick={() => setShowComentarios(true)}
+                        onClick={async () => {
+                          setShowComentarios(true);
+                          try {
+                            const tipo = selected.natureza === "positiva" ? "positivas" : "negativas";
+                            const url = `https://raw.githubusercontent.com/qway-tech/qway-indica-dados/main/referencias/${tipo}/comentarios/${selected.id.toLowerCase()}.json`;
+                            const res = await fetch(url);
+                            if (res.ok) {
+                              const json = await res.json();
+                              setComentarios(Array.isArray(json) ? json : (Array.isArray(json.comentarios) ? json.comentarios : []));
+                            } else {
+                              setComentarios([]);
+                            }
+                          } catch {
+                            setComentarios([]);
+                          }
+                        }}
                         className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-sm rounded font-medium"
                       >
                         <span className="flex items-center gap-1">
@@ -1008,7 +1046,7 @@ async function carregarContadores(referencias: Referencia[]) {
           const json = await carregarJsonDeArquivo(caminho);
           comentarios = Array.isArray(json) ? json.length
             : Array.isArray(json.comentarios) ? json.comentarios.length
-            : 0;
+              : 0;
         } catch (err) {
           // Falha ao carregar comentários: assume 0
         }

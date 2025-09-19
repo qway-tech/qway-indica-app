@@ -87,6 +87,7 @@ export default function IndicarPage() {
     e.preventDefault();
     setTentouEnviar(true);
 
+
     // Validação de campos obrigatórios
     const camposObrigatorios = ["titulo", "nome", "empresaOuResponsavel", "descricao"];
     const faltando = camposObrigatorios.filter((campo) => !form[campo as keyof typeof form]);
@@ -112,7 +113,7 @@ export default function IndicarPage() {
 
     // Buscar o maior número atual disponível
     let nextId = 1;
-    const githubPath = `https://api.github.com/repos/qway-tech/qway-referencias/contents/referencias/${folder}`;
+    const githubPath = `https://api.github.com/repos/qway-tech/qway-indica-dados/contents/referencias/${folder}`;
     try {
       const response = await fetch(githubPath);
       const files = await response.json();

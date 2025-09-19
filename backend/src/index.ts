@@ -34,6 +34,12 @@ const app = express();
 const PORT = process.env.PORT || 4001;
 const API_BASE_URL = process.env.API_BASE_URL;
 
+// Constantes para evitar repetições
+const OWNER = "qway-tech";
+const REPO = "qway-indica-dados";
+const BRANCH = "main";
+const GITHUB_API = `https://api.github.com/repos/${OWNER}/${REPO}`;
+
 const allowedOrigins = [
   'http://localhost:5174',
   'https://academy.qway.com.br',
@@ -174,9 +180,6 @@ app.post("/registrar-referencia", async (req: Request, res: Response) => {
   }
 
   const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-  const OWNER = "qway-tech";
-  const REPO = "qway-referencias";
-  const BRANCH = "main";
 
   const headers = {
     Authorization: `Bearer ${GITHUB_TOKEN}`,
@@ -185,7 +188,7 @@ app.post("/registrar-referencia", async (req: Request, res: Response) => {
   };
 
   const folder = `referencias/${natureza === "positiva" ? "positivas" : "negativas"}`;
-  const url = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${folder}`;
+  const url = `${GITHUB_API}/contents/${folder}`;
 
   try {
     // Buscar lista de arquivos já existentes
@@ -202,7 +205,7 @@ app.post("/registrar-referencia", async (req: Request, res: Response) => {
     const nextNumber = (Math.max(...numeros, 0)) + 1;
     const id = `${prefix}-${String(nextNumber).padStart(4, "0")}`;
     const path = `${folder}/${id}.json`;
-    const commitUrl = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${path}`;
+    const commitUrl = `${GITHUB_API}/contents/${path}`;
 
     // Estrutura final do conteúdo com ID, natureza e dataRegistro
     const final = {
@@ -244,9 +247,6 @@ app.post("/registrar-comentario", async (req: Request, res: Response) => {
   }
 
   const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-  const OWNER = "qway-tech";
-  const REPO = "qway-referencias";
-  const BRANCH = "main";
 
   const headers = {
     Authorization: `Bearer ${GITHUB_TOKEN}`,
@@ -255,7 +255,7 @@ app.post("/registrar-comentario", async (req: Request, res: Response) => {
   };
 
   const commentPath = `referencias/${natureza === "positiva" ? "positivas" : "negativas"}/comentarios/${referenciaId}.json`;
-  const commentUrl = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${commentPath}`;
+  const commentUrl = `${GITHUB_API}/contents/${commentPath}`;
 
   try {
     const novoComentario = {
@@ -319,9 +319,6 @@ app.post("/registrar-voto", async (req: Request, res: Response) => {
   }
 
   const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-  const OWNER = "qway-tech";
-  const REPO = "qway-referencias";
-  const BRANCH = "main";
 
   const headers = {
     Authorization: `Bearer ${GITHUB_TOKEN}`,
@@ -330,7 +327,7 @@ app.post("/registrar-voto", async (req: Request, res: Response) => {
   };
 
   const votosPath = `referencias/${natureza === "positiva" ? "positivas" : "negativas"}/votos/${referenciaId}.json`;
-  const votosUrl = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${votosPath}`;
+  const votosUrl = `${GITHUB_API}/contents/${votosPath}`;
 
   try {
     const novoVoto = {
@@ -392,9 +389,6 @@ app.post("/remover-voto", async (req: Request, res: Response) => {
   }
 
   const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-  const OWNER = "qway-tech";
-  const REPO = "qway-referencias";
-  const BRANCH = "main";
 
   const headers = {
     Authorization: `Bearer ${GITHUB_TOKEN}`,
@@ -403,7 +397,7 @@ app.post("/remover-voto", async (req: Request, res: Response) => {
   };
 
   const votosPath = `referencias/${referenciaId.startsWith("pos-") ? "positivas" : "negativas"}/votos/${referenciaId}.json`;
-  const votosUrl = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${votosPath}`;
+  const votosUrl = `${GITHUB_API}/contents/${votosPath}`;
 
   try {
     const r = await fetch(votosUrl, { headers });
@@ -454,9 +448,6 @@ app.get("/comentarios", async (req: Request, res: Response) => {
   }
 
   const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-  const OWNER = "qway-tech";
-  const REPO = "qway-referencias";
-  const BRANCH = "main";
 
   const headers = {
     Authorization: `Bearer ${GITHUB_TOKEN}`,
@@ -465,7 +456,7 @@ app.get("/comentarios", async (req: Request, res: Response) => {
   };
 
   const commentPath = `referencias/${natureza === "positiva" ? "positivas" : "negativas"}/comentarios/${referenciaId}.json`;
-  const commentUrl = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${commentPath}`;
+  const commentUrl = `${GITHUB_API}/contents/${commentPath}`;
 
   try {
     const r = await fetch(commentUrl, { headers });
@@ -490,9 +481,6 @@ app.get("/conteudo-arquivo", async (req: Request, res: Response) => {
   }
 
   const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-  const OWNER = "qway-tech";
-  const REPO = "qway-referencias";
-  const BRANCH = "main";
 
   const headers = {
     Authorization: `Bearer ${GITHUB_TOKEN}`,
@@ -500,7 +488,7 @@ app.get("/conteudo-arquivo", async (req: Request, res: Response) => {
     "X-GitHub-Api-Version": "2022-11-28",
   };
 
-  const rawUrl = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${path}`;
+  const rawUrl = `${GITHUB_API}/contents/${path}`;
 
   try {
     const r = await fetch(rawUrl, { headers });
@@ -536,8 +524,6 @@ app.get("/listar-arquivos", async (req: Request, res: Response) => {
   const decodedDiretorio = decodeURIComponent(path);
 
   const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-  const OWNER = "qway-tech";
-  const REPO = "qway-referencias";
 
   const headers = {
     Authorization: `Bearer ${GITHUB_TOKEN}`,
@@ -545,7 +531,7 @@ app.get("/listar-arquivos", async (req: Request, res: Response) => {
     "X-GitHub-Api-Version": "2022-11-28",
   };
 
-  const url = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${decodedDiretorio}`;
+  const url = `${GITHUB_API}/contents/${decodedDiretorio}`;
 
   try {
     const r = await fetch(url, { headers });
@@ -558,5 +544,81 @@ app.get("/listar-arquivos", async (req: Request, res: Response) => {
   } catch (err: any) {
     console.error("Erro ao listar arquivos:", err);
     return res.status(500).json({ error: "Erro ao listar arquivos", details: err?.message });
+  }
+});
+// Nova rota: DELETE /remover-comentario
+app.delete("/remover-comentario", async (req: Request, res: Response) => {
+  const { referenciaId, natureza, comentarioIndex, email } = req.body;
+
+  if (
+    !referenciaId ||
+    !natureza ||
+    comentarioIndex === undefined ||
+    comentarioIndex < 0 ||
+    !email
+  ) {
+    return res
+      .status(400)
+      .json({ error: "Parâmetros obrigatórios ausentes ou inválidos" });
+  }
+
+  const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+
+  const headers = {
+    Authorization: `Bearer ${GITHUB_TOKEN}`,
+    Accept: "application/vnd.github+json",
+    "X-GitHub-Api-Version": "2022-11-28",
+  };
+
+  const commentPath = `referencias/${
+    natureza === "positiva" ? "positivas" : "negativas"
+  }/comentarios/${referenciaId}.json`;
+  const commentUrl = `${GITHUB_API}/contents/${commentPath}`;
+
+  try {
+    const r = await fetch(commentUrl, { headers });
+
+    if (!r.ok) {
+      return res.status(404).json({ error: "Arquivo de comentários não encontrado" });
+    }
+
+    const jsonData = (await r.json()) as { content: string; sha: string };
+    const content = Buffer.from(jsonData.content, "base64").toString("utf-8");
+    const comentarios = JSON.parse(content) as {
+      email: string;
+      texto: string;
+      autor: string;
+      data: string;
+    }[];
+
+    // Verificação de segurança: o email precisa bater
+    if (comentarios[comentarioIndex]?.email !== email) {
+      return res.status(403).json({ error: "Comentário não pertence ao usuário" });
+    }
+
+    const novosComentarios = comentarios.filter((_, i) => i !== comentarioIndex);
+
+    const payload = {
+      message: `Remoção de comentário em ${referenciaId}`,
+      content: Buffer.from(JSON.stringify(novosComentarios, null, 2)).toString("base64"),
+      branch: BRANCH,
+      sha: jsonData.sha,
+    };
+
+    const put = await fetch(commentUrl, {
+      method: "PUT",
+      headers,
+      body: JSON.stringify(payload),
+    });
+
+    if (!put.ok) {
+      const msg = await put.text();
+      throw new Error("Erro ao remover comentário: " + msg);
+    }
+
+    return res.json({ sucesso: true });
+  } catch (err: any) {
+    console.error("Erro ao remover comentário:", err);
+    return res.status(500).json({ error: "Erro ao remover comentário", details: err?.message });
   }
 });

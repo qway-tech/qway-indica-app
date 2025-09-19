@@ -15,10 +15,6 @@ export type Referencia = {
   status: string;
 };
 
-const OWNER = "qway-tech";
-const REPO = "qway-referencias";
-const BRANCH = "main";
-
 async function fetchComToken(url: string, options: RequestInit = {}) {
   const token = import.meta.env.VITE_GITHUB_TOKEN;
   return fetch(url, {
@@ -45,7 +41,7 @@ export async function fetchReferenciasPorTipo(tipo: "positivas" | "negativas"): 
     const arquivosJson = data.filter(item => item.name.endsWith(".json") && item.download_url);
 
     const referencias = await Promise.all(
-      arquivosJson.map(async (item) => {
+      arquivosJson.slice(0, 20).map(async (item) => {
         try {
           const res = await fetch(`http://localhost:4001/conteudo-arquivo?path=referencias/${tipo}/${item.name}`);
           if (!res.ok) return null;
