@@ -1,0 +1,48 @@
+{
+  "name": "qway-referencias",
+  "version": "1.0.0",
+  "description": "QWay Referências - Plataforma de referências positivas e negativas sobre cursos, mentorias e conteúdos em TI.",
+  "main": "index.js",
+  "scripts": {
+    "test": "cd frontend && npm test",
+    "lint": "eslint ./frontend/src ./backend/src --ext .ts,.tsx --max-warnings=0",
+    "format": "prettier --write \"./**/*.{js,ts,tsx,css,md,json}\"",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qway-tech/qway-referencias.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/qway-tech/qway-referencias/issues"
+  },
+  "homepage": "https://github.com/qway-tech/qway-referencias#readme",
+  "dependencies": {
+    "dayjs": "^1.11.18",
+    "lucide-react": "^0.544.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-icons": "^5.5.0",
+    "react-router-dom": "^7.8.2"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.12",
+    "@types/react-dom": "^19.1.9",
+    "@types/react-router-dom": "^5.3.3",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "@vitejs/plugin-react": "^5.0.2",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^8.57.0",
+    "postcss": "^8.5.6",
+    "prettier": "^3.0.0",
+    "tailwindcss": "^4.1.12",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.4"
+  }
+}

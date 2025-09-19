@@ -1,0 +1,22 @@
+{
+  "id": "pos-0002",
+  "natureza": "positiva",
+  "tipoIndicacao": "educacao",
+  "titulo": "Mentoria personalizada que mudou minha visão sobre QA",
+  "nome": "Mentoria Avançada em QA",
+  "empresaOuResponsavel": "Bruno Martins",
+  "tipo": "mentoria",
+  "area": "QA",
+  "especialidade": "",
+  "valor": "497.00",
+  "link": "",
+  "descricao": "Mentoria com foco no desenvolvimento de habilidades práticas, excelente acompanhamento individual e muitos feedbacks construtivos.",
+  "aspectosSelecionados": [
+    "Experiência transformadora",
+    "Acompanhamento individual ou em grupo",
+    "Feedbacks construtivos",
+    "Instrutor com boa didática"
+  ],
+  "dataRegistro": "2025-09-16T17:00:00Z",
+  "status": "aprovada"
+}

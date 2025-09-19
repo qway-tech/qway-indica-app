@@ -1,0 +1,23 @@
+{
+    "id": "pos-0001",
+    "natureza": "positiva",
+    "tipoIndicacao": "educacao",
+    "titulo": "Didática clara e prática, ótimo suporte",
+    "nome": "QA Profissional: Do Manual à Automação",
+    "empresaOuResponsavel": "Juliana Testadora",
+    "tipo": "curso",
+    "area": "QA",
+    "especialidade": "",
+    "valor": "297.00",
+    "link": "",
+    "descricao": "Curso direto ao ponto, com ótimos exemplos reais e linguagem acessível. O suporte foi rápido e atencioso. Superou minhas expectativas.",
+    "aspectosSelecionados": [
+        "Conteúdo claro e aplicável",
+        "Instrutor com boa didática",
+        "Suporte presente e eficiente",
+        "Boa relação custo-benefício",
+        "Cumprimento do que foi prometido"
+    ],
+    "dataRegistro": "2025-09-15T15:45:00Z",
+    "status": "aprovada"
+}

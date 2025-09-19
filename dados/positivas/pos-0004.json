@@ -1,0 +1,21 @@
+{
+  "id": "pos-0004",
+  "natureza": "positiva",
+  "tipoIndicacao": "empresa",
+  "titulo": "Ambiente colaborativo com foco real em qualidade",
+  "nome": "TechQube Solutions",
+  "empresaOuResponsavel": "",
+  "area": "Desenvolvimento Full Stack",
+  "especialidade": "",
+  "tipo": "empresa",
+  "link": "",
+  "descricao": "Empresa com cultura ágil, processos bem definidos de qualidade e valorização da equipe de QA. Ótima experiência.",
+  "aspectosSelecionados": [
+    "Cumprimento do que foi prometido",
+    "Boa relação custo-benefício",
+    "Organização dos processos",
+    "Valorização dos profissionais"
+  ],
+  "dataRegistro": "2025-09-16T17:10:00Z",
+  "status": "pendente"
+}

@@ -1,0 +1,41 @@
+name: Deploy para Hostinger via FTP
+
+on:
+  push:
+    branches:
+      - main  # ou a branch principal do seu projeto
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v3
+
+      - name: Criar arquivo .env.production
+        run: |
+          echo "VITE_REPO_OWNER=qway-tech" >> ./frontend/.env.production
+          echo "VITE_REPO_NAME=qats" >> ./frontend/.env.production
+          echo "VITE_REPO_BRANCH=main" >> ./frontend/.env.production
+          echo "VITE_GITHUB_TOKEN=${{ secrets.PUSH_TOKEN }}" >> ./frontend/.env.production
+          echo "VITE_GITHUB_CLIENT_ID=${{ secrets.CLIENT_ID }}" >> ./frontend/.env.production
+          echo "VITE_GITHUB_CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}" >> ./frontend/.env.production
+          echo "VITE_API_BASE_URL=https://qats-backend.onrender.com" >> ./frontend/.env.production
+
+      - name: Instalar dependências
+        run: npm install
+        working-directory: ./frontend
+
+      - name: Build do projeto
+        run: npm run build
+        working-directory: ./frontend
+
+      - name: Deploy para Hostinger via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./frontend/dist/
+          server-dir: /public_html/

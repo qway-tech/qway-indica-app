@@ -1,0 +1,36 @@
+# Node
+node_modules/
+dist/
+.env*
+.vitepress/
+.vscode/
+.idea/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage/
+*.lcov
+
+# Output
+*.log
+
+# Optional: cache de dependências
+.pnpm-store/
+.cache/
+
+# TypeScript
+*.tsbuildinfo
+
+# Editor folders
+*.sw?
+*.sublime-*
+*.bak
+*.tmp

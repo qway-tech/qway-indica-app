@@ -1,0 +1,14 @@
+{
+  "idReferencia": "neg-0001",
+  "totalVotos": 2,
+  "votos": [
+    {
+      "data": "2025-09-15T17:12:00Z",
+      "email": "usuario1@example.com"
+    },
+    {
+      "data": "2025-09-15T17:15:00Z",
+      "email": "daniel.kodeout@gmail.com"
+    }
+  ]
+}
